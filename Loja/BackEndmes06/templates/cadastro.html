@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Conta{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center py-4">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+        <div class="nexus-card p-4 p-md-5">
+
+            <!-- Cabeçalho -->
+            <div class="text-center mb-4">
+                <div class="brand-icon-box mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <h1 class="h3 fw-bold text-dark mb-1">Criar Nova Conta</h1>
+                <p class="text-muted small mb-0">Preencha o formulário abaixo para se cadastrar na plataforma.</p>
+            </div>
+
+            <!-- Formulário de Cadastro -->
+            <form action="{{ url_for('user.cadastro_usuario') }}" method="POST" id="form-cadastro">
+
+                <!-- Nome / Usuário -->
+                <div class="mb-3">
+                    <label for="nome" class="nexus-label">
+                        <i class="bi bi-person text-primary"></i> Nome Completo / Usuário <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-person"></i>
+                        <input type="text"
+                               class="form-control nexus-input w-100"
+                               id="nome"
+                               name="nome"
+                               value="{{ nome or '' }}"
+                               placeholder="Ex: Carlos Eduardo"
+                               required
+                               autocomplete="name">
+                    </div>
+                </div>
+
+                <!-- E-mail -->
+                <div class="mb-3">
+                    <label for="email" class="nexus-label">
+                        <i class="bi bi-envelope text-primary"></i> Endereço de E-mail <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email"
+                               class="form-control nexus-input w-100"
+                               id="email"
+                               name="email"
+                               value="{{ email or '' }}"
+                               placeholder="nome@empresa.com"
+                               required
+                               autocomplete="email">
+                    </div>
+                </div>
+
+                <!-- Telefone -->
+                <div class="mb-3">
+                    <label for="telefone" class="nexus-label">
+                        <i class="bi bi-telephone text-primary"></i> Telefone / Celular <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-telephone"></i>
+                        <input type="tel"
+                               class="form-control nexus-input w-100"
+                               id="telefone"
+                               name="telefone"
+                               value="{{ telefone or '' }}"
+                               placeholder="(11) 98765-4321"
+                               required
+                               autocomplete="tel">
+                    </div>
+                </div>
+
+                <!-- Senha -->
+                <div class="mb-3">
+                    <label for="senha" class="nexus-label">
+                        <i class="bi bi-lock text-primary"></i> Senha de Acesso <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-icon-wrap position-relative">
+                        <i class="bi bi-lock"></i>
+                        <input type="password"
+                               class="form-control nexus-input w-100 pe-5"
+                               id="senha"
+                               name="senha"
+                               placeholder="Crie uma senha segura"
+                               required
+                               autocomplete="new-password">
+                        <button type="button" 
+                                class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted text-decoration-none pe-3 border-0 bg-transparent"
+                                onclick="toggleSenha('senha', this)"
+                                tabindex="-1">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <small class="text-muted" style="font-size: 0.775rem;">Mínimo de 6 caracteres recomendado.</small>
+                </div>
+
+                <!-- Confirmar Senha -->
+                <div class="mb-4">
+                    <label for="confirmar_senha" class="nexus-label">
+                        <i class="bi bi-shield-check text-primary"></i> Confirmar Senha <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-icon-wrap position-relative">
+                        <i class="bi bi-shield-check"></i>
+                        <input type="password"
+                               class="form-control nexus-input w-100 pe-5"
+                               id="confirmar_senha"
+                               name="confirmar_senha"
+                               placeholder="Repita sua senha"
+                               required
+                               autocomplete="new-password">
+                        <button type="button" 
+                                class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted text-decoration-none pe-3 border-0 bg-transparent"
+                                onclick="toggleSenha('confirmar_senha', this)"
+                                tabindex="-1">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div id="erro-senha" class="text-danger small mt-1 d-none">
+                        <i class="bi bi-x-circle me-1"></i> As senhas não conferem.
+                    </div>
+                </div>
+
+                <!-- Termos -->
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="termos" required checked>
+                    <label class="form-check-label text-muted small" for="termos">
+                        Concordo com os termos de uso e políticas de privacidade da plataforma.
+                    </label>
+                </div>
+
+                <!-- Botão de Envio -->
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-nexus-primary py-2 justify-content-center fs-6">
+                        <i class="bi bi-check2-circle fs-5"></i> Cadastrar Minha Conta
+                    </button>
+                </div>
+
+                <!-- Link para Login -->
+                <div class="text-center pt-3 border-top">
+                    <p class="text-muted small mb-0">
+                        Já tem uma conta cadastrada? 
+                        <a href="{{ url_for('main.login') }}" class="text-decoration-none fw-semibold text-primary">
+                            Fazer Login
+                        </a>
+                    </p>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+function toggleSenha(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    }
+}
+
+document.getElementById('form-cadastro').addEventListener('submit', function(e) {
+    const s1 = document.getElementById('senha').value;
+    const s2 = document.getElementById('confirmar_senha').value;
+    const erro = document.getElementById('erro-senha');
+    if (s1 !== s2) {
+        e.preventDefault();
+        erro.classList.remove('d-none');
+        document.getElementById('confirmar_senha').focus();
+    } else {
+        erro.classList.add('d-none');
+    }
+});
+</script>
+{% endblock %}

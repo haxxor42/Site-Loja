@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Serviços{% endblock %}
+
+{% block content %}
+<div class="py-3">
+
+    <!-- Cabeçalho -->
+    <div class="text-center mb-5">
+        <span class="nexus-badge nexus-badge-indigo mb-2">Recursos & Soluções</span>
+        <h1 class="h2 fw-bold text-dark mb-2">Serviços da Plataforma</h1>
+        <p class="text-muted" style="max-width: 600px; margin: 0 auto;">
+            Descubra todos os recursos integrados disponíveis para gerenciamento, inventário e operação de dados.
+        </p>
+    </div>
+
+    <!-- Grid de Serviços -->
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="nexus-card nexus-card-hover h-100 p-4">
+                <div class="brand-icon-box mb-3" style="width: 44px; height: 44px; background: #eef2ff; color: #4f46e5;">
+                    <i class="bi bi-box-seam-fill"></i>
+                </div>
+                <h2 class="h5 fw-bold text-dark mb-2">Controle de Inventário</h2>
+                <p class="text-muted small mb-3">
+                    Acompanhamento em tempo real de produtos cadastrados, contagem precisa de unidades e registro automático de entradas e saídas de estoque.
+                </p>
+                <a href="{{ url_for('loja.index') }}" class="text-primary text-decoration-none fw-semibold small">
+                    Acessar inventário <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="nexus-card nexus-card-hover h-100 p-4">
+                <div class="brand-icon-box mb-3" style="width: 44px; height: 44px; background: #ecfdf5; color: #10b981;">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+                <h2 class="h5 fw-bold text-dark mb-2">Gestão de Usuários</h2>
+                <p class="text-muted small mb-3">
+                    Autenticação criptografada, proteção de sessão de usuário, controle cadastral e facilidade para atualização de perfis e dados de contato.
+                </p>
+                <a href="{{ url_for('user.cadastro_usuario') }}" class="text-primary text-decoration-none fw-semibold small">
+                    Ver cadastros <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="nexus-card nexus-card-hover h-100 p-4">
+                <div class="brand-icon-box mb-3" style="width: 44px; height: 44px; background: #fef3c7; color: #d97706;">
+                    <i class="bi bi-speedometer2"></i>
+                </div>
+                <h2 class="h5 fw-bold text-dark mb-2">Consultas Rápidas</h2>
+                <p class="text-muted small mb-3">
+                    Mecanismo de busca otimizado por nome, código ou termos-chave, com feedback instantâneo sobre disponibilidade e métricas.
+                </p>
+                <a href="{{ url_for('loja.cadastrar_produto') }}" class="text-primary text-decoration-none fw-semibold small">
+                    Cadastrar item <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

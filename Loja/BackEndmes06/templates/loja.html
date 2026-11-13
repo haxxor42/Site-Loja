@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciamento de Estoque{% endblock %}
+
+{% block content %}
+<div class="py-2">
+
+    <!-- Cabeçalho Principal do Sistema de Estoque -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+                <i class="bi bi-boxes text-primary"></i> Gerenciamento de Estoque
+            </h1>
+            <p class="text-muted small mb-0">Controle de inventário, cadastro, edição e movimentação de qualquer produto.</p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('loja.cadastrar_produto') }}" class="btn btn-nexus-primary">
+                <i class="bi bi-plus-circle-fill"></i> Cadastrar Novo Produto
+            </a>
+        </div>
+    </div>
+
+    <!-- Indicadores / Métricas do Estoque (KPIs) -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="nexus-card p-3 d-flex align-items-center gap-3">
+                <div class="brand-icon-box" style="width: 48px; height: 48px; background: #eef2ff; color: #4f46e5;">
+                    <i class="bi bi-box-seam fs-4"></i>
+                </div>
+                <div>
+                    <div class="text-muted small fw-semibold">Produtos Cadastrados</div>
+                    <div class="fs-4 fw-bold text-dark">{{ total_produtos }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="nexus-card p-3 d-flex align-items-center gap-3">
+                <div class="brand-icon-box" style="width: 48px; height: 48px; background: #ecfdf5; color: #10b981;">
+                    <i class="bi bi-stack fs-4"></i>
+                </div>
+                <div>
+                    <div class="text-muted small fw-semibold">Unidades no Estoque</div>
+                    <div class="fs-4 fw-bold text-success">{{ total_unidades }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="nexus-card p-3 d-flex align-items-center gap-3">
+                <div class="brand-icon-box" style="width: 48px; height: 48px; background: #f0fdfa; color: #0d9488;">
+                    <i class="bi bi-cash-stack fs-4"></i>
+                </div>
+                <div>
+                    <div class="text-muted small fw-semibold">Valor Total em Estoque</div>
+                    <div class="fs-5 fw-bold text-dark">R$ {{ "%.2f"|format(valor_total_estoque)|replace('.', ',') }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="nexus-card p-3 d-flex align-items-center gap-3">
+                <div class="brand-icon-box" style="width: 48px; height: 48px; background: #fef2f2; color: #ef4444;">
+                    <i class="bi bi-exclamation-triangle fs-4"></i>
+                </div>
+                <div>
+                    <div class="text-muted small fw-semibold">Itens Críticos / Zerados</div>
+                    <div class="fs-4 fw-bold text-danger">{{ estoque_baixo + esgotados }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Filtro e Pesquisa -->
+    <div class="nexus-card p-3 mb-4">
+        <form method="GET" action="{{ url_for('loja.index') }}" class="row g-2 align-items-center">
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="input-icon-wrap">
+                    <i class="bi bi-search"></i>
+                    <input type="text"
+                           name="busca"
+                           class="form-control nexus-input w-100"
+                           placeholder="Pesquisar por nome ou detalhes do produto..."
+                           value="{{ busca }}">
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3 d-flex gap-2">
+                <button type="submit" class="btn btn-nexus-primary flex-grow-1 justify-content-center">
+                    <i class="bi bi-funnel"></i> Filtrar
+                </button>
+                {% if busca %}
+                    <a href="{{ url_for('loja.index') }}" class="btn btn-nexus-outline" title="Limpar filtro">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    {% if busca %}
+        <div class="nexus-alert nexus-alert-warning py-2 px-3 small d-flex justify-content-between align-items-center mb-3">
+            <span>Resultados para: <strong>"{{ busca }}"</strong> ({{ total_produtos }} produto(s) encontrado(s))</span>
+            <a href="{{ url_for('loja.index') }}" class="text-decoration-none fw-semibold">Limpar pesquisa</a>
+        </div>
+    {% endif %}
+
+    <!-- TABELA CRUD DE GERENCIAMENTO DE ESTOQUE -->
+    {% if produtos %}
+        <div class="nexus-card overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light border-bottom">
+                        <tr class="small text-muted text-uppercase" style="letter-spacing: 0.04em;">
+                            <th class="ps-4 py-3" style="width: 70px;"># ID</th>
+                            <th class="py-3">Produto</th>
+                            <th class="py-3">Preço Unitário</th>
+                            <th class="py-3 text-center" style="min-width: 170px;">Estoque (Qtd)</th>
+                            <th class="py-3">Total Estimado</th>
+                            <th class="py-3">Status</th>
+                            <th class="pe-4 py-3 text-end" style="min-width: 140px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produto in produtos %}
+                            <tr>
+                                <!-- ID -->
+                                <td class="ps-4 fw-semibold text-muted">
+                                    #{{ produto.id_p }}
+                                </td>
+
+                                <!-- Nome e Descrição -->
+                                <td>
+                                    <div class="fw-bold text-dark">{{ produto.nome_produto }}</div>
+                                    {% if produto.descricao_produto %}
+                                        <div class="text-muted small text-truncate" style="max-width: 320px;" title="{{ produto.descricao_produto }}">
+                                            {{ produto.descricao_produto }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+
+                                <!-- Preço Unitário -->
+                                <td class="fw-semibold text-dark text-nowrap">
+                                    R$ {{ "%.2f"|format(produto.valor)|replace('.', ',') }}
+                                </td>
+
+                                <!-- Quantidade e Movimentação Rápida -->
+                                <td class="text-center">
+                                    <div class="d-inline-flex align-items-center gap-1 bg-light p-1 rounded-3 border">
+                                        <!-- Botão Saída Rápida (-) -->
+                                        <form action="{{ url_for('loja.saida_estoque', id_p=produto.id_p) }}" method="POST" class="d-inline">
+                                            <input type="hidden" name="quantidade" value="1">
+                                            <button type="submit" 
+                                                    class="btn btn-sm btn-outline-danger px-2 py-0 border-0 fw-bold" 
+                                                    title="Dar baixa em 1 unidade"
+                                                    {% if not produto.qtd_produto or produto.qtd_produto <= 0 %}disabled{% endif %}>
+                                                &minus;
+                                            </button>
+                                        </form>
+
+                                        <!-- Quantidade Atual -->
+                                        <span class="fw-bold px-2 text-dark" style="min-width: 40px; display: inline-block;">
+                                            {{ produto.qtd_produto or 0 }}
+                                        </span>
+
+                                        <!-- Botão Entrada Rápida (+) -->
+                                        <form action="{{ url_for('loja.entrada_estoque', id_p=produto.id_p) }}" method="POST" class="d-inline">
+                                            <input type="hidden" name="quantidade" value="1">
+                                            <button type="submit" 
+                                                    class="btn btn-sm btn-outline-success px-2 py-0 border-0 fw-bold" 
+                                                    title="Adicionar 1 unidade">
+                                                &plus;
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <!-- Total Calculado -->
+                                <td class="fw-semibold text-primary text-nowrap">
+                                    R$ {{ "%.2f"|format((produto.valor or 0.0) * (produto.qtd_produto or 0))|replace('.', ',') }}
+                                </td>
+
+                                <!-- Status Badge -->
+                                <td>
+                                    {% if produto.qtd_produto and produto.qtd_produto > 5 %}
+                                        <span class="nexus-badge nexus-badge-green">
+                                            <i class="bi bi-check-circle"></i> Normal
+                                        </span>
+                                    {% elif produto.qtd_produto and produto.qtd_produto > 0 %}
+                                        <span class="nexus-badge" style="background-color: #fef3c7; color: #b45309;">
+                                            <i class="bi bi-exclamation-circle"></i> Baixo ({{ produto.qtd_produto }})
+                                        </span>
+                                    {% else %}
+                                        <span class="nexus-badge nexus-badge-red">
+                                            <i class="bi bi-x-circle"></i> Esgotado
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <!-- Ações (Editar e Excluir) -->
+                                <td class="pe-4 text-end text-nowrap">
+                                    <!-- Botão de Editar -->
+                                    <a href="{{ url_for('loja.editar_produto', id_p=produto.id_p) }}" 
+                                       class="btn btn-sm btn-nexus-outline p-1 px-2 me-1" 
+                                       title="Editar produto">
+                                        <i class="bi bi-pencil-square text-primary"></i> Editar
+                                    </a>
+
+                                    <!-- Botão de Excluir -->
+                                    <form action="{{ url_for('loja.excluir', id_p=produto.id_p) }}" 
+                                          method="POST" 
+                                          class="d-inline"
+                                          onsubmit="return confirm('Deseja realmente excluir o produto \'{{ produto.nome_produto }}\' do estoque?');">
+                                        <button type="submit" 
+                                                class="btn btn-sm btn-outline-danger p-1 px-2" 
+                                                title="Excluir produto">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Rodapé da Tabela com Resumo -->
+            <div class="p-3 bg-light border-top d-flex flex-column flex-sm-row justify-content-between align-items-center small text-muted gap-2">
+                <div>
+                    Exibindo <strong>{{ produtos|length }}</strong> produto(s) no sistema.
+                </div>
+                <div>
+                    Estoque total acumulado: <strong>{{ total_unidades }} unidades</strong> &bull; Patrimônio: <strong>R$ {{ "%.2f"|format(valor_total_estoque)|replace('.', ',') }}</strong>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Estado Vazio -->
+        <div class="nexus-card p-5 text-center">
+            <div class="brand-icon-box mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.6rem; background: #eef2ff; color: #4f46e5;">
+                <i class="bi bi-inbox-fill"></i>
+            </div>
+            <h2 class="h5 fw-bold text-dark">Nenhum produto cadastrado no estoque</h2>
+            <p class="text-muted small mb-4" style="max-width: 480px; margin: 0 auto;">
+                {% if busca %}
+                    Não encontramos nenhum produto que coincida com a busca "{{ busca }}". Tente buscar por outro termo.
+                {% else %}
+                    Seu sistema de estoque está vazio. Clique no botão abaixo para registrar o primeiro produto (de qualquer categoria) no sistema.
+                {% endif %}
+            </p>
+            <div>
+                <a href="{{ url_for('loja.cadastrar_produto') }}" class="btn btn-nexus-primary">
+                    <i class="bi bi-plus-circle-fill"></i> Cadastrar Primeiro Produto
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Produto no Estoque{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-3">
+    <div class="col-12 col-lg-10 col-xl-9">
+
+        <!-- Topo da Página -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-muted">
+                        <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}" class="text-decoration-none">Início</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('loja.index') }}" class="text-decoration-none">Estoque</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Novo Produto</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-plus-square-fill text-primary"></i> Cadastrar Produto no Estoque
+                </h1>
+            </div>
+
+            <div>
+                <a href="{{ url_for('loja.index') }}" class="btn btn-nexus-outline">
+                    <i class="bi bi-arrow-left"></i> Ver Todos os Produtos
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Formulário Principal -->
+            <div class="col-12 col-lg-8">
+                <div class="nexus-card p-4 p-md-5">
+
+                    <form action="{{ url_for('loja.cadastrar_produto') }}" method="POST">
+
+                        <!-- Nome do Produto -->
+                        <div class="mb-4">
+                            <label for="nome_produto" class="nexus-label">
+                                <i class="bi bi-box-seam text-primary"></i> Nome do Produto <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-box-seam"></i>
+                                <input type="text"
+                                       class="form-control nexus-input w-100"
+                                       id="nome_produto"
+                                       name="nome_produto"
+                                       value="{{ nome_produto or '' }}"
+                                       placeholder="Ex: Parafuso Sextavado, Smartphone, Cadeira, etc."
+                                       required>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.775rem;">Nome de identificação do item para controle de estoque.</small>
+                        </div>
+
+                        <!-- Preço e Quantidade (Lado a Lado) -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="valor" class="nexus-label">
+                                    <i class="bi bi-currency-dollar text-primary"></i> Preço Unitário (R$) <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-icon-wrap">
+                                    <i class="bi bi-currency-dollar"></i>
+                                    <input type="number"
+                                           step="0.01"
+                                           min="0"
+                                           class="form-control nexus-input w-100"
+                                           id="valor"
+                                           name="valor"
+                                           value="{{ valor or '' }}"
+                                           placeholder="Ex: 59.90"
+                                           required>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.775rem;">Valor em reais por unidade (Ex: 25.50).</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="qtd_produto" class="nexus-label">
+                                    <i class="bi bi-stack text-primary"></i> Quantidade Inicial <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-icon-wrap">
+                                    <i class="bi bi-layers"></i>
+                                    <input type="number"
+                                           min="0"
+                                           class="form-control nexus-input w-100"
+                                           id="qtd_produto"
+                                           name="qtd_produto"
+                                           value="{{ qtd_produto or '1' }}"
+                                           placeholder="Ex: 10"
+                                           required>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.775rem;">Quantidade física disponível para lançamento.</small>
+                            </div>
+                        </div>
+
+                        <!-- Descrição / Observações -->
+                        <div class="mb-4">
+                            <label for="descricao_produto" class="nexus-label">
+                                <i class="bi bi-card-text text-primary"></i> Descrição / Observações
+                            </label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-card-text" style="top: 24px;"></i>
+                                <textarea class="form-control nexus-input w-100"
+                                          id="descricao_produto"
+                                          name="descricao_produto"
+                                          rows="4"
+                                          placeholder="Especificações do produto, dimensões, lote ou detalhes importantes...">{{ descricao_produto or '' }}</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Ações do Formulário -->
+                        <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+                            <button type="submit" class="btn btn-nexus-primary px-4 py-2">
+                                <i class="bi bi-check-lg fs-5"></i> Cadastrar no Estoque
+                            </button>
+                            <a href="{{ url_for('loja.index') }}" class="btn btn-nexus-outline px-4 py-2">
+                                Cancelar
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Coluna Lateral: Guia do Sistema -->
+            <div class="col-12 col-lg-4">
+                <div class="nexus-card p-4 mb-4">
+                    <h2 class="h6 fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-primary"></i> Controle de Estoque
+                    </h2>
+                    <ul class="list-unstyled small text-muted mb-0 d-flex flex-column gap-3">
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-6 mt-0"></i>
+                            <span><strong>Qualquer Produto:</strong> Registre qualquer tipo de item ou mercadoria.</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-6 mt-0"></i>
+                            <span><strong>Cálculo Automático:</strong> O sistema calculará o valor patrimonial total com base no preço e quantidade.</span>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-6 mt-0"></i>
+                            <span><strong>Movimentações:</strong> Você poderá fazer entradas (+) e saídas (-) rápidas diretamente na tabela de estoque.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Painel do Sistema de Estoque{% endblock %}
+
+{% block content %}
+<div class="py-2">
+
+    <!-- Hero Banner do Sistema -->
+    <div class="nexus-card p-4 p-md-5 mb-5 position-relative overflow-hidden" 
+         style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #312e81 100%); color: #ffffff; border: none;">
+        <div class="row align-items-center position-relative" style="z-index: 2;">
+            <div class="col-lg-8">
+                <span class="nexus-badge mb-3" style="background: rgba(99, 102, 241, 0.25); color: #c7d2fe; border: 1px solid rgba(199, 210, 254, 0.2);">
+                    <i class="bi bi-box-seam"></i> Sistema Genérico de Gestão de Estoque
+                </span>
+                <h1 class="display-6 fw-bold text-white mb-3">
+                    Gerenciamento Inteligente de Estoque
+                </h1>
+                <p class="lead text-light opacity-90 mb-4" style="max-width: 650px; font-size: 1.05rem;">
+                    CRUD completo para controle de qualquer tipo de mercadoria ou produto: cadastre novos itens, consulte o inventário, edite informações, movimente entradas e saídas e exclua registros com total agilidade.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ url_for('loja.index') }}" class="btn btn-nexus-primary">
+                        <i class="bi bi-boxes"></i> Acessar Estoque & Inventário
+                    </a>
+                    <a href="{{ url_for('loja.cadastrar_produto') }}" class="btn btn-nexus-outline" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: #ffffff;">
+                        <i class="bi bi-plus-circle"></i> Cadastrar Produto
+                    </a>
+                    <a href="{{ url_for('user.cadastro_usuario') }}" class="btn btn-nexus-outline" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: #ffffff;">
+                        <i class="bi bi-person-plus"></i> Novo Usuário
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center d-none d-lg-block">
+                <div class="p-4" style="background: rgba(255, 255, 255, 0.05); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+                    <i class="bi bi-boxes text-primary" style="font-size: 5rem; filter: drop-shadow(0 10px 20px rgba(79, 70, 229, 0.4));"></i>
+                    <div class="mt-3 text-light small fw-medium">Controle de Estoque &bull; CRUD Ativo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Módulos do Sistema -->
+    <div class="mb-4">
+        <h2 class="h5 fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-grid-fill text-primary"></i> Operações do Sistema
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Módulo 1: Cadastro de Produtos -->
+            <div class="col-md-4">
+                <div class="nexus-card nexus-card-hover h-100 p-4 d-flex flex-column">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px; background: #eef2ff; color: #4f46e5;">
+                        <i class="bi bi-plus-square-fill"></i>
+                    </div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Cadastrar Produtos</h3>
+                    <p class="text-muted small flex-grow-1 mb-4">
+                        Adicione qualquer produto ao sistema com nome, preço unitário, quantidade inicial e descrição técnica.
+                    </p>
+                    <a href="{{ url_for('loja.cadastrar_produto') }}" class="btn btn-nexus-primary justify-content-center">
+                        <i class="bi bi-plus-lg"></i> Novo Cadastro
+                    </a>
+                </div>
+            </div>
+
+            <!-- Módulo 2: Gestão do Estoque -->
+            <div class="col-md-4">
+                <div class="nexus-card nexus-card-hover h-100 p-4 d-flex flex-column">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px; background: #ecfdf5; color: #10b981;">
+                        <i class="bi bi-table"></i>
+                    </div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Painel de Estoque</h3>
+                    <p class="text-muted small flex-grow-1 mb-4">
+                        Tabela interativa de estoque: busque produtos, acompanhe métricas, faça entradas (+) e saídas (-) rápidas, edite e exclua itens.
+                    </p>
+                    <a href="{{ url_for('loja.index') }}" class="btn btn-nexus-outline justify-content-center">
+                        <i class="bi bi-arrow-right"></i> Ver Estoque
+                    </a>
+                </div>
+            </div>
+
+            <!-- Módulo 3: Controle de Usuários -->
+            <div class="col-md-4">
+                <div class="nexus-card nexus-card-hover h-100 p-4 d-flex flex-column">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px; background: #fdf2f8; color: #db2777;">
+                        <i class="bi bi-person-badge-fill"></i>
+                    </div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Usuários & Acesso</h3>
+                    <p class="text-muted small flex-grow-1 mb-4">
+                        Sistema de autenticação com login seguro, tela de registro de novos usuários e gerenciamento dos dados cadastrais.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('main.login') }}" class="btn btn-nexus-outline flex-grow-1 justify-content-center">
+                            Login
+                        </a>
+                        <a href="{{ url_for('user.cadastro_usuario') }}" class="btn btn-nexus-primary flex-grow-1 justify-content-center">
+                            Cadastro
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
