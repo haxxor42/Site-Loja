@@ -1,38 +1,17 @@
-# NexusCore - Sistema de Gerenciamento de Estoque (CRUD Genérico)
+O NexusCore é um sistema web completo de gerenciamento de estoque desenvolvido em Python (Flask) e SQLite.
 
-Sistema web completo em Python (Flask) e SQLite para controle e gestão de estoque de qualquer tipo de produto ou mercadoria.
+Principais recursos:
 
-## Funcionalidades do CRUD de Estoque
+CRUD Completo: Cadastro, consulta, edição e exclusão segura de produtos.
 
-1. **Create (Cadastrar Produto)**:
-   - Formulário completo para cadastrar qualquer produto: Nome, Preço Unitário (R$), Quantidade em Estoque e Descrição/Observações.
-   - Acesso: `/loja/cadastrar` ou pelo botão "+ Cadastrar Novo Produto".
+Dashboard e KPIs: Monitoramento em tempo real do total de produtos, unidades físicas, valor acumulado e alertas de estoque baixo/esgotado.
 
-2. **Read (Painel e Consulta de Estoque)**:
-   - Dashboard com KPIs em tempo real:
-     - Total de Produtos Cadastrados
-     - Unidades Físicas em Estoque
-     - Valor Total Acumulado do Estoque (R$)
-     - Alerta de Produtos Críticos / Esgotados
-   - Tabela gerencial de produtos com pesquisa/filtro por nome ou descrição.
-   - Status visual automático do estoque (Normal, Baixo, Esgotado).
-   - Acesso: `/loja/` ou `/produtos`.
+Movimentação Rápida: Facilidade para registrar entradas e saídas de itens diretamente pela tabela gerencial.
 
-3. **Update (Editar e Movimentar Estoque)**:
-   - **Edição Completa**: Tela dedicada para alterar nome, valor, quantidade e especificações (`/loja/editar/<id>`).
-   - **Movimentação Rápida**: Botões diretos de entrada (`+`) e saída (`-`) de unidades na própria tabela.
+Módulo de Usuários: Sistema de login, cadastro e gerenciamento de perfil.
 
-4. **Delete (Excluir Produto)**:
-   - Exclusão segura de itens com diálogo de confirmação.
-
-5. **Módulo de Usuários**:
-   - Autenticação e Login (`/login`)
-   - Cadastro de Usuários (`/cadastro`)
-   - Visualização e edição de perfil (`/user/dados`)
-
-## Como Executar
-
-```bash
+Como executar:
+Basta acessar a pasta BackEndmes06, rodar o comando python app.py (ou executar o arquivo iniciar_site.bat) e abrir [http://127.0.0.1:5000](http://127.0.0.1:5000) no navegador.
 cd BackEndmes06
 python app.py
 ```
